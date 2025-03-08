@@ -1,9 +1,13 @@
-FROM zhaowde/rotating-tor-http-proxy
+FROM ubuntu:latest
 
-ENV TOR_INSTANCES=5 \
-    TOR_REBUILD_INTERVAL=3600 \
-    TOR_EXIT_COUNTRY=de,ch,at
+# Install dependencies
+RUN apt update && apt install -y tor privoxy
 
+# Copy Tor configuration (if needed)
+COPY torrc /etc/tor/torrc
+
+# Expose ports
 EXPOSE 3128 4444
 
-CMD ["./start.sh"]
+# Command to run Tor
+CMD ["tor"]
